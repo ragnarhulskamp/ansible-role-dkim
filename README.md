@@ -1,16 +1,18 @@
-# ansible-dkim
-Ansible role for opendkim with postfix configuration on ubuntu
+# ansible-role-dkim
+Ansible role for opendkim on CentOS
 
 ### Example playbook
 ```yaml
 ---
-- hosts: myserver
-  user: root
-  sudo: False
+- hosts: testingnodes
+  user: centos
+  sudo: True
+  vars:
+      admin_email: admin@example.com
   roles:
-    - role: sunfoxcz.dkim
-      dkim_selector: mail
+    - role: ansible-role-dkim
+      dkim_selector: default
       dkim_domains:
-       - domain1.tld
-       - domain2.tld
+       - example.com
+       - example.org
 ```

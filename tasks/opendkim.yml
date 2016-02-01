@@ -1,14 +1,8 @@
 ---
 - name: opendkim packages are installed
-  apt: pkg={{ item }} state=installed
+  yum: pkg={{ item }} state=installed
   with_items:
    - opendkim
-   - opendkim-tools
-
-- name: opendkim socket configured
-  lineinfile: dest=/etc/default/opendkim regexp=^SOCKET= line='SOCKET="inet:12301@localhost"'
-  notify:
-   - restart opendkim
 
 - name: opendkim directory present
   file: path=/etc/opendkim state=directory
