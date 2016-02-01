@@ -6,9 +6,9 @@ Ansbile role to setup opendkim and sign keys on CentOS.
 
 Role Variables
 --------------
-  admin_email: The email address of the admin
-  dkim_selector: The name of the dkim selector
-  dkim_domains: List of domain names for which keys have to be signed.
+  - admin_email: The email address of the admin
+  - dkim_selector: The name of the dkim selector
+  - dkim_domains: List of domain names for which keys have to be signed.
 
 Example Playbook
 ----------------
