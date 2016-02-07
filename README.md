@@ -14,8 +14,6 @@ Example Playbook
 ----------------
 
 Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-=======
 ```yaml
 ---
   - hosts: testingnodes
@@ -23,7 +21,6 @@ Including an example of how to use your role (for instance, with variables passe
     become: True
     roles:
       - { role: ansible-role-dkim, admin_email: admin@example.com, dkim_selector: default, dkim_domains: [example.com, example.org]}
-=======
 ```
 In this example, example.com will be used as primary domain.
 
