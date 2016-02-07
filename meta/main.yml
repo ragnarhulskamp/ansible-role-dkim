@@ -12,5 +12,8 @@ galaxy_info:
   categories:
    - networking
    - system
+  tags:
+    - security
+    - email
 
 dependencies: []
