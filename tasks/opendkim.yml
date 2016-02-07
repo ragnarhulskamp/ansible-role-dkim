@@ -6,6 +6,8 @@
 
 - name: opendkim directory present
   file: path=/etc/opendkim state=directory
+
+- name: opendkim keys directory present
   file: path=/etc/opendkim/keys state=directory
 
 - name: opendkim TrustedHosts present

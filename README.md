@@ -15,12 +15,13 @@ Example Playbook
 
 Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
 
+---
   - hosts: testingnodes
     user: centos
     sudo: True
     vars:
     roles:
-      - { role: ansible-role-dkim, admin_email: admin@example.com, dkim_selector: default, dkim_domains: [example.com example.org]}
+      - { role: ansible-role-dkim, admin_email: admin@example.com, dkim_selector: default, dkim_domains: [example.com, example.org]}
 
 License
 -------
