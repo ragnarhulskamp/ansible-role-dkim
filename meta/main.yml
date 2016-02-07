@@ -1,7 +1,7 @@
 ---
 galaxy_info:
   author: Sudheer Satyanarayana
-  description: Ansible Role to install opendkim and setyuo DKIM for domains.
+  description: Ansible Role to install opendkim and setup DKIM for domains.
   company: Gavika Information Technologies Pvt. Ltd.
   license: BSD
   min_ansible_version: 1.2
@@ -15,5 +15,4 @@ galaxy_info:
   galaxy_tags:
     - security
     - email
-
 dependencies: []
