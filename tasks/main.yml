@@ -1,2 +1,68 @@
 ---
-- include: opendkim.yml
+- name: Install Opendkim packages
+  yum:
+    name: "{{ item }}"
+    state: installed
+  with_items:
+   - opendkim
+
+- name: Opendkim directory
+  file:
+    path: /etc/opendkim
+    state: directory
+
+- name: Opendkim keys directory
+  file:
+    path: /etc/opendkim/keys
+    state: directory
+
+- name: Opendkim TrustedHosts
+  copy:
+    src: TrustedHosts
+    dest: /etc/opendkim/TrustedHosts
+  notify:
+   - restart opendkim
+
+- name: opendkim is configured
+  template:
+    src: opendkim.conf.j2
+    dest: /etc/opendkim.conf
+  notify:
+   - restart opendkim
+
+- name: Opendkim KeyTable is configured
+  template:
+    src: KeyTable.j2
+    dest: /etc/opendkim/KeyTable
+  notify:
+   - restart opendkim
+
+- name: Opendkim SigningTable is configured
+  template:
+    src: SigningTable.j2
+    dest: /etc/opendkim/SigningTable
+  notify:
+   - restart opendkim
+
+- name: Ensure signing key is present
+  stat:
+    path: "/etc/opendkim/keys/{{ dkim_selector }}.private get_md5=no"
+  register: dkim_key
+
+- name: generate signing key
+  shell: opendkim-genkey -s {{ dkim_selector }} -d {{ dkim_domains[0] }} -D /etc/opendkim/keys
+  when: not dkim_key.stat.exists
+  notify:
+   - restart opendkim
+
+- name: ensure signing key owner
+  file:
+    path: "/etc/opendkim/keys/{{ dkim_selector }}.private"
+    owner: opendkim
+    group: opendkim
+
+- name: Start and enable Opendkim
+  systemd:
+    name: opendkim
+    state: started
+    enabled: true

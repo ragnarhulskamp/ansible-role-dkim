@@ -1,7 +1,7 @@
 Role Name
 =========
 
-Ansbile role to setup opendkim and sign keys on CentOS.
+Ansbile role to setup opendkim and sign keys.
 
 
 Role Variables
@@ -14,13 +14,18 @@ Example Playbook
 ----------------
 
 Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+
 ```yaml
 ---
-  - hosts: testingnodes
-    user: centos
-    become: True
+  - hosts: all
+    vars:
+      admin_email: admin@example.com
+      dkim_selector: default
+      dkim_domains:
+        - example.com
+        - example.org
     roles:
-      - { role: ansible-role-dkim, admin_email: admin@example.com, dkim_selector: default, dkim_domains: [example.com, example.org]}
+      - role: bngsudheer.dkim
 ```
 In this example, example.com will be used as primary domain.
 
@@ -31,4 +36,3 @@ BSD
 Author Information
 ------------------
 Written by Sudheer Satyanarayana. Originally forked from https://github.com/sunfoxcz/ansible-dkim.
-
