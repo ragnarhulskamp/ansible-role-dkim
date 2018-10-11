@@ -25,7 +25,7 @@ Including an example of how to use your role (for instance, with variables passe
         - example.com
         - example.org
     roles:
-      - role: bngsudheer.dkim
+      - role: bngsudheer.opendkim
 ```
 In this example, example.com will be used as primary domain.
 
