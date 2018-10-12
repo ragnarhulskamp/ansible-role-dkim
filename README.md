@@ -33,6 +33,21 @@ Including an example of how to use your role (for instance, with variables passe
 ```
 In this example, example.com will be used as primary domain.
 
+Example with EPEL:
+```yaml
+---
+  - hosts: all
+    vars:
+      admin_email: admin@example.com
+      dkim_selector: default
+      dkim_domains:
+        - example.com
+        - example.org
+    roles:
+      - role: bngsudheer.centos_base
+      - role: bngsudheer.opendkim
+```
+
 License
 -------
 BSD
