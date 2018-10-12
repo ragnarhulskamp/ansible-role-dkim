@@ -12,3 +12,8 @@ def test_hosts_file(host):
     assert f.exists
     assert f.user == 'root'
     assert f.group == 'root'
+
+
+def test_opendkim_is_installed(host):
+    opendkim = host.package("opendkim")
+    assert opendkim.is_installed

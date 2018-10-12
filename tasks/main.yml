@@ -3,6 +3,7 @@
   yum:
     name:
       - opendkim
+      - openssl
     state: installed
 
 - name: Opendkim directory
@@ -49,7 +50,7 @@
   register: dkim_key
 
 - name: Generate signing key
-  shell: opendkim-genkey -s {{ dkim_selector }} -d {{ dkim_domains[0] }} -D /etc/opendkim/keys
+  shell: /usr/sbin/opendkim-genkey -s {{ dkim_selector }} -d {{ dkim_domains[0] }} -D /etc/opendkim/keys
   when: not dkim_key.stat.exists
   notify:
     - restart opendkim
