@@ -17,3 +17,7 @@ def test_hosts_file(host):
 def test_opendkim_is_installed(host):
     opendkim = host.package("opendkim")
     assert opendkim.is_installed
+
+
+def test_default_key_exists(host):
+    host.file("/etc/opendkim/keys/default.txt").exists
