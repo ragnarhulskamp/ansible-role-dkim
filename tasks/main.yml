@@ -16,7 +16,7 @@
     path: /etc/opendkim/keys
     state: directory
 
-- name: Opendkim TrustedHosts
+- name: Opendkim TrustedHosts configuration
   copy:
     src: TrustedHosts
     dest: /etc/opendkim/TrustedHosts
@@ -37,7 +37,7 @@
   notify:
     - restart opendkim
 
-- name: Opendkim SigningTable is configured
+- name: Opendkim SigningTable configuration
   template:
     src: SigningTable.j2
     dest: /etc/opendkim/SigningTable
@@ -57,7 +57,7 @@
   tags:
     - skip_ansible_lint
 
-- name: Ensure signing key owner
+- name: Opendkim signing key file ownership
   file:
     path: "/etc/opendkim/keys/{{ dkim_selector }}.private"
     owner: opendkim
