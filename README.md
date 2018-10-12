@@ -23,7 +23,6 @@ Including an example of how to use your role (for instance, with variables passe
 ---
   - hosts: all
     vars:
-      admin_email: admin@example.com
       dkim_selector: default
       dkim_domains:
         - example.com
