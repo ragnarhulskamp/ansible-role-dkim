@@ -10,7 +10,7 @@ using this role.
 
 Role Variables
 --------------
-  - admin_email: The email address of the admin
+  - dkim_admin_email: The email address of the admin
   - dkim_selector: The name of the dkim selector
   - dkim_domains: List of domain names for which keys have to be signed.
 
