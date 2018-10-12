@@ -1,10 +1,9 @@
 ---
 - name: Install Opendkim packages
   yum:
-    name: "{{ item }}"
+    name:
+      - opendkim
     state: installed
-  with_items:
-   - opendkim
 
 - name: Opendkim directory
   file:
@@ -21,28 +20,28 @@
     src: TrustedHosts
     dest: /etc/opendkim/TrustedHosts
   notify:
-   - restart opendkim
+    - restart opendkim
 
 - name: Opendkim configuration
   template:
     src: opendkim.conf.j2
     dest: /etc/opendkim.conf
   notify:
-   - restart opendkim
+    - restart opendkim
 
 - name: Opendkim KeyTable configuration
   template:
     src: KeyTable.j2
     dest: /etc/opendkim/KeyTable
   notify:
-   - restart opendkim
+    - restart opendkim
 
 - name: Opendkim SigningTable is configured
   template:
     src: SigningTable.j2
     dest: /etc/opendkim/SigningTable
   notify:
-   - restart opendkim
+    - restart opendkim
 
 - name: Ensure signing key is present
   stat:
@@ -53,7 +52,9 @@
   shell: opendkim-genkey -s {{ dkim_selector }} -d {{ dkim_domains[0] }} -D /etc/opendkim/keys
   when: not dkim_key.stat.exists
   notify:
-   - restart opendkim
+    - restart opendkim
+  tags:
+    - skip_ansible_lint
 
 - name: Ensure signing key owner
   file:

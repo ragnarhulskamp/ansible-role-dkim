@@ -3,6 +3,10 @@ Role Name
 
 Ansbile role to setup opendkim and sign keys.
 
+Dependncies
+------------
+For EL systems, the opendkim package is available from EPEL. Enable EPEL before
+using this role.
 
 Role Variables
 --------------
