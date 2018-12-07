@@ -44,18 +44,13 @@
   notify:
     - restart opendkim
 
-- name: Ensure signing key is present
-  stat:
-    path: "/etc/opendkim/keys/{{ dkim_selector }}.private"
-  register: dkim_key
-
 - name: Generate signing key
-  shell: /usr/sbin/opendkim-genkey -s {{ dkim_selector }} -d {{ dkim_domains[0] }} -D /etc/opendkim/keys
-  when: not dkim_key.stat.exists
+  command: /usr/sbin/opendkim-genkey -s {{ dkim_selector }} -d {{ dkim_domains[0] }} -D /etc/opendkim/keys
+  args:
+    creates: "/etc/opendkim/keys/{{ dkim_selector }}.private"
+    warn: false
   notify:
     - restart opendkim
-  tags:
-    - skip_ansible_lint
 
 - name: Opendkim signing key file ownership
   file:
