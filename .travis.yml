@@ -3,7 +3,6 @@ sudo: required
 language: python
 services:
   - docker
-env:
 matrix:
   include:
     - env: OPENDKIM_USE_CENTOS_BASE=true
