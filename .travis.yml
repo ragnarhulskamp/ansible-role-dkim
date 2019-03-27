@@ -6,7 +6,7 @@ services:
 env:
 matrix:
   include:
-    - env: OPENDKIM_USE_CENTOS_BASE=true 
+    - env: OPENDKIM_USE_CENTOS_BASE=true
 install:
   - pip install molecule
   - pip install docker
