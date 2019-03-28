@@ -1,10 +1,11 @@
 ---
-- name: Install Opendkim packages
-  yum:
-    name:
-      - opendkim
-      - openssl
-    state: installed
+- name: Setup for Ubuntu
+  include_tasks: "setup_ubuntu.yml"
+  when: ansible_distribution == 'Ubuntu'
+
+- name: Setup for CentOS
+  include_tasks: "setup_el.yml"
+  when: ansible_distribution == 'CentOS'
 
 - name: Opendkim directory
   file:
@@ -45,7 +46,7 @@
     - restart opendkim
 
 - name: Generate signing key
-  command: /usr/sbin/opendkim-genkey -s {{ dkim_selector }} -d {{ dkim_domains[0] }} -D /etc/opendkim/keys
+  command: "{{ opendkim_opendkim_genkey_path }} -s {{ dkim_selector }} -d {{ dkim_domains[0] }} -D /etc/opendkim/keys"
   args:
     creates: "/etc/opendkim/keys/{{ dkim_selector }}.private"
     warn: false

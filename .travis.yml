@@ -6,6 +6,7 @@ services:
 matrix:
   include:
     - env: OPENDKIM_USE_CENTOS_BASE=true OPENDKIM_MOLECULE_DISTRO=centos:7 OPENDKIM_MOLECULE_COMMAND=/usr/sbin/init
+    - env: OPENDKIM_USE_CENTOS_BASE=false OPENDKIM_MOLECULE_DISTRO='solita/ubuntu-systemd:18.04' OPENDKIM_MOLECULE_COMMAND='/sbin/init'
 install:
   - pip install molecule
   - pip install docker
