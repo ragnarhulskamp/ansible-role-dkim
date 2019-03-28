@@ -5,7 +5,7 @@ services:
   - docker
 matrix:
   include:
-    - env: OPENDKIM_USE_CENTOS_BASE=true
+    - env: OPENDKIM_USE_CENTOS_BASE=true OPENDKIM_MOLECULE_DISTRO=centos:7 OPENDKIM_MOLECULE_COMMAND=/usr/sbin/init
 install:
   - pip install molecule
   - pip install docker
