@@ -45,11 +45,20 @@
   notify:
     - restart opendkim
 
+# - name: Generate signing key
+#   command: "{{ opendkim_opendkim_genkey_path }} -s {{ dkim_selector }} -d {{ dkim_domains[0] }} -D /etc/opendkim/keys"
+#   args:
+#     creates: "/etc/opendkim/keys/{{ dkim_selector }}.private"
+#     warn: false
+#   notify:
+#     - restart opendkim
+
 - name: Generate signing key
-  command: "{{ opendkim_opendkim_genkey_path }} -s {{ dkim_selector }} -d {{ dkim_domains[0] }} -D /etc/opendkim/keys"
+  command: "{{ opendkim_opendkim_genkey_path }} -s {{ item }} -d {{ item }} -D /etc/opendkim/keys"
   args:
-    creates: "/etc/opendkim/keys/{{ dkim_selector }}.private"
+    creates: "/etc/opendkim/keys/{{ item }}.private"
     warn: false
+  with_items: "{{ dkim_domains }}"
   notify:
     - restart opendkim
 
