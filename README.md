@@ -13,6 +13,7 @@ Role Variables
   - dkim_admin_email: The email address of the admin
   - dkim_selector: The name of the dkim selector
   - dkim_domains: List of domain names for which keys have to be signed.
+  - dkim_one_key_per_domain: Option to use one key per domain
 
 Example Playbook
 ----------------

@@ -8,4 +8,9 @@
   yum:
     name:
       - opendkim
+      - opendkim-tools
       - openssl
+
+- name: Set opendkim-genkey path
+  set_fact:
+    opendkim_opendkim_genkey_path: /usr/sbin/opendkim-genkey

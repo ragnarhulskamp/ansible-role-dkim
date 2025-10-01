@@ -1,23 +1,28 @@
 ---
 - name: Setup for Ubuntu
+  tags: opendkim
   include_tasks: "setup_ubuntu.yml"
   when: ansible_distribution == 'Ubuntu'
 
-- name: Setup for CentOS
+- name: Setup for EL (RHEL/CentOS/Rocky/Alma)
+  tags: opendkim
   include_tasks: "setup_el.yml"
-  when: ansible_distribution == 'CentOS'
+  when: ansible_os_family == 'RedHat'
 
 - name: Opendkim directory
+  tags: opendkim
   file:
     path: /etc/opendkim
     state: directory
 
 - name: Opendkim keys directory
+  tags: opendkim
   file:
     path: /etc/opendkim/keys
     state: directory
 
 - name: Opendkim TrustedHosts configuration
+  tags: opendkim
   copy:
     src: TrustedHosts
     dest: /etc/opendkim/TrustedHosts
@@ -25,6 +30,7 @@
     - restart opendkim
 
 - name: Opendkim configuration
+  tags: opendkim
   template:
     src: opendkim.conf.j2
     dest: /etc/opendkim.conf
@@ -32,6 +38,7 @@
     - restart opendkim
 
 - name: Opendkim KeyTable configuration
+  tags: opendkim
   template:
     src: KeyTable.j2
     dest: /etc/opendkim/KeyTable
@@ -39,6 +46,7 @@
     - restart opendkim
 
 - name: Opendkim SigningTable configuration
+  tags: opendkim
   template:
     src: SigningTable.j2
     dest: /etc/opendkim/SigningTable
@@ -46,39 +54,58 @@
     - restart opendkim
 
 - name: Generate default signing key
+  tags: opendkim
   command: "{{ opendkim_opendkim_genkey_path }} -s {{ dkim_selector }} -d {{ dkim_domains[0] }} -D /etc/opendkim/keys"
   args:
     creates: "/etc/opendkim/keys/{{ dkim_selector }}.private"
-    warn: false
+  changed_when: false
   notify:
     - restart opendkim
+  when: not opendkim_one_key_per_domain
 
 - name: Opendkim default signing key file ownership
+  tags: opendkim
   file:
     path: "/etc/opendkim/keys/{{ dkim_selector }}.private"
     owner: opendkim
     group: opendkim
-  loop: "{{ dkim_domains }}"
+    mode: '0600'
+  when: not opendkim_one_key_per_domain
 
-- name: Generate individual signing key
-  command: "{{ opendkim_opendkim_genkey_path }} -s {{ item }} -d {{ item }} -D /etc/opendkim/keys"
+- name: Ensure per-domain key directories exist
+  tags: opendkim
+  file:
+    path: "/etc/opendkim/keys/{{ item }}"
+    state: directory
+    owner: opendkim
+    group: opendkim
+    mode: '0750'
+  loop: "{{ dkim_domains }}"
+  when: opendkim_one_key_per_domain
+
+- name: Generate per-domain signing keys
+  tags: opendkim
+  command: "{{ opendkim_opendkim_genkey_path }} -s {{ dkim_selector }} -d {{ item }} -D /etc/opendkim/keys/{{ item }}"
   args:
-    creates: "/etc/opendkim/keys/{{ item }}.private"
-    warn: false
+    creates: "/etc/opendkim/keys/{{ item }}/{{ dkim_selector }}.private"
+  changed_when: false
   loop: "{{ dkim_domains }}"
   notify:
     - restart opendkim
-  when: opendkim_one_key_per_domain == true
+  when: opendkim_one_key_per_domain
 
-- name: Opendkim signing individual key file ownership
+- name: Ensure per-domain private key ownership
+  tags: opendkim
   file:
-    path: "/etc/opendkim/keys/{{ item }}.private"
+    path: "/etc/opendkim/keys/{{ item }}/{{ dkim_selector }}.private"
     owner: opendkim
     group: opendkim
+    mode: '0600'
   loop: "{{ dkim_domains }}"
-  when: opendkim_one_key_per_domain == true
+  when: opendkim_one_key_per_domain
 
 - name: Start and enable Opendkim
+  tags: opendkim
   systemd:
     name: opendkim
     state: started

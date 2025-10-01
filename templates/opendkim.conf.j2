@@ -6,7 +6,7 @@ SyslogSuccess           Yes
 LogWhy                  Yes
 ReportAddress           {{ dkim_admin_email }}
 
-Canonicalization        relaxed/simple
+Canonicalization        relaxed/relaxed
 
 ExternalIgnoreList      refile:/etc/opendkim/TrustedHosts
 InternalHosts           refile:/etc/opendkim/TrustedHosts

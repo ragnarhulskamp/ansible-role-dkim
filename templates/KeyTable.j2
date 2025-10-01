@@ -1,3 +1,7 @@
 {% for domain in dkim_domains %}
-{{ dkim_selector }}._domainkey.{{ domain }} {{ domain }}:{{ dkim_selector }}:/etc/opendkim/keys/{{ domain }}.private
+{%   if opendkim_one_key_per_domain %}
+{{ dkim_selector }}._domainkey.{{ domain }} {{ domain }}:{{ dkim_selector }}:/etc/opendkim/keys/{{ domain }}/{{ dkim_selector }}.private
+{%   else %}
+{{ dkim_selector }}._domainkey.{{ domain }} {{ domain }}:{{ dkim_selector }}:/etc/opendkim/keys/{{ dkim_selector }}.private
+{%   endif %}
 {% endfor %}
